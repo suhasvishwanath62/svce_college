@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Cafeteria</title>
+    <style>
+        h1{
+            color: aqua;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        section {
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            text-align: left;
+        }
+
+        button:hover {
+            background-color: #7a854b;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        input {
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>COLLEGE CAFETERIA</h1>
+    </header>
+
+    <section id="customer">
+        <h2>Enter Your Name</h2>
+        <input type="text" id="customer-name" placeholder="Your Name">
+    </section>
+
+    <section id="menu">
+        <h2>Menu</h2>
+        <div id="items-container"></div>
+    </section>
+
+    <section id="order">
+        <h2>Your Order</h2>
+        <ul id="order-list"></ul>
+        <p>Total: ₹<span id="total-price">0.00</span></p>
+        <button onclick="checkout()">Checkout</button>
+    </section>
+
+    <section id="stats">
+        <h2>Statistics</h2>
+        <p>Total Sales: ₹<span id="total-sales">0.00</span></p>
+        <p>Total Purchases: <span id="total-purchases">0</span></p>
+    </section>
+
+    <script>
+        const menuItems = [
+            { id: 1, name: 'Burger', price: 50 },
+            { id: 2, name: 'Pizza', price: 120 },
+            { id: 3, name: 'Salad', price: 30 },
+            { id: 4, name: 'Chicken Sandwich', price: 69 },
+            { id: 5, name: 'Pasta', price: 30 },
+            { id: 6, name: 'Fries', price: 40 },
+            { id: 7, name: 'Smoothie', price: 50 },
+            { id: 8, name: 'Coffee', price: 20 },
+            { id: 9, name: 'Rolls', price: 35 },
+            { id: 10, name: 'Nuggets', price: 30 },
+            { id: 11, name: 'Sandwiche', price: 25 },
+            { id: 12, name: 'Tea', price: 10 },
+            { id: 13, name: 'Corns', price: 20 },
+            
+            // Add more items as needed
+        ];
+
+        let order = [];
+        let totalSales = 0;
+        let totalPurchases = 0;
+
+        function displayMenu() {
+            const itemsContainer = document.getElementById('items-container');
+
+            menuItems.forEach(item => {
+                const button = document.createElement('button');
+                button.innerText = `${item.name} - ${item.price.toFixed(2)}`;
+                button.onclick = () => addToOrder(item);
+                itemsContainer.appendChild(button);
+            });
+        }
+
+        function addToOrder(item) {
+            order.push(item);
+            updateOrder();
+        }
+
+        function updateOrder() {
+            const orderList = document.getElementById('order-list');
+            const totalPrice = document.getElementById('total-price');
+
+            orderList.innerHTML = '';
+            let total = 0;
+
+            order.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.innerText = `${item.name} - ${item.price.toFixed(2)}`;
+                orderList.appendChild(listItem);
+                total += item.price;
+            });
+
+            totalPrice.innerText = total.toFixed(2);
+        }
+
+        function checkout() {
+            const customerName = document.getElementById('customer-name').value;
+
+            if (customerName.trim() === '') {
+                alert('Please enter your name before checking out.');
+                return;
+            }
+
+            // Simulate a checkout process (in a real application, this would involve a server)
+            totalSales += order.reduce((acc, item) => acc + item.price, 0);
+            totalPurchases += order.length;
+
+            // Reset the order
+            order = [];
+            updateOrder();
+
+            // Update statistics
+            updateStatistics();
+
+            // Display a thank you message
+            alert(`Thank you, ${customerName}! Your order has been placed.`);
+        }
+
+        function updateStatistics() {
+            const totalSalesElement = document.getElementById('total-sales');
+            const totalPurchasesElement = document.getElementById('total-purchases');
+
+            totalSalesElement.innerText = totalSales.toFixed(2);
+            totalPurchasesElement.innerText = totalPurchases;
+        }
+
+        // Display initial menu and statistics
+        displayMenu();
+        updateStatistics();
+    </script>
+</body>
+</html>
